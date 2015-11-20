@@ -27,6 +27,7 @@ public class HelloController {
 			@RequestParam(value = "message", required = false, defaultValue = "test") String message) {
 		logger.info("this is hello controller : http method(GET)");
 		model.addAttribute("message", message);
+
 		return "showMessage";
 	};
 
