@@ -7,8 +7,9 @@ Spring MVC with Java Configuration
 - tomcat 버전 : 8
 
 빌드 도구
-- maven
+- Maven
 
 테스트 도구
-- fiddler
-- chrome plugin - postman
+- Fiddler
+- Chrome plugin(Postman)
+- Chrome plugin(EditThisCookie)
