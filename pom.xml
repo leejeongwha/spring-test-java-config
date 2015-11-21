@@ -108,6 +108,18 @@
 			<version>1.9.1.RELEASE</version>
 		</dependency>
 		
+		<!-- Mybatis -->
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis</artifactId>
+			<version>3.3.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis-spring</artifactId>
+			<version>1.2.3</version>
+		</dependency>
+		
 		<!-- HSQL DB -->
 		<dependency>
 			<groupId>org.hsqldb</groupId>

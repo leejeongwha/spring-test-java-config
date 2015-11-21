@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.naver.test.orm.mapper.BoardUserMapper">
+    <select id="getBoardUserList" resultType="com.naver.test.orm.entity.BoardUser">
+        SELECT
+        	id
+        	,passwd
+        	,user_name as userName
+        	,age
+        	,role
+        FROM board_user
+    </select>
+</mapper> 

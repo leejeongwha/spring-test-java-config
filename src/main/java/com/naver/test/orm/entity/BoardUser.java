@@ -2,8 +2,6 @@ package com.naver.test.orm.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -11,7 +9,6 @@ import javax.persistence.Table;
 @Table(name = "board_user")
 public class BoardUser {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
 	@Column(name = "passwd", nullable = false)
