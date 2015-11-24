@@ -38,7 +38,7 @@ public class AppConfiguration implements SchedulingConfigurer, AsyncConfigurer {
 	public CacheManager cacheManager() {
 		// Spring's CacheManager SPI 설정 필수!!
 		SimpleCacheManager cacheManager = new SimpleCacheManager();
-		cacheManager.setCaches(Arrays.asList(new ConcurrentMapCache("default")));
+		cacheManager.setCaches(Arrays.asList(new ConcurrentMapCache("board")));
 		return cacheManager;
 	}
 
