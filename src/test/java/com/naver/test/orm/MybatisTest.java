@@ -22,7 +22,7 @@ import com.naver.test.orm.mapper.BoardUserMapper;
 @WebAppConfiguration
 @ContextConfiguration(classes = AppConfiguration.class)
 @Transactional()
-@ActiveProfiles("mybatis")
+@ActiveProfiles({ "default", "mybatis" })
 public class MybatisTest {
 	final static Logger logger = LoggerFactory.getLogger(MybatisTest.class);
 

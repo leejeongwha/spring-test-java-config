@@ -12,7 +12,6 @@ import org.springframework.cache.support.SimpleCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScan.Filter;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.http.converter.xml.MarshallingHttpMessageConverter;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
@@ -26,7 +25,7 @@ import org.springframework.stereotype.Controller;
 
 import com.naver.test.task.CustomAsyncExceptionHandler;
 
-@Configuration
+//@Configuration
 @ComponentScan(basePackages = { "com.naver.test" }, excludeFilters = @Filter({ Controller.class }) )
 @EnableScheduling
 @EnableCaching

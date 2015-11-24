@@ -96,6 +96,13 @@
 			<scope>runtime</scope>
 		</dependency>
 		
+		<!-- Spring websocket -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-websocket</artifactId>
+			<version>${spring-framework.version}</version>
+		</dependency>
+		
 		<!-- Spring OXM -->
 		<dependency>
 			<groupId>org.springframework</groupId>

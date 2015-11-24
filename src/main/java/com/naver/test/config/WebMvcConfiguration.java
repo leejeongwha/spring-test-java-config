@@ -6,7 +6,6 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScan.Filter;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
@@ -24,7 +23,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import com.naver.test.mvc.interceptor.MvcTestInterceptor;
 
 @EnableWebMvc
-@Configuration
+// @Configuration
 @ComponentScan(basePackages = {
 		"com.naver.test" }, useDefaultFilters = false, includeFilters = @Filter(Controller.class) )
 public class WebMvcConfiguration extends WebMvcConfigurationSupport {
