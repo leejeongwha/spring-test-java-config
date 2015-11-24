@@ -27,9 +27,9 @@ public class MyHandler extends TextWebSocketHandler {
 	 */
 	@Override
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-		// 연결된 모든 클라이언트에게 메시지 전송 : 리스트 방법
+		// 연결된 모든 클라이언트에게 메시지 전송
 		for (WebSocketSession sess : sessionList) {
-			sess.sendMessage(new TextMessage("echo:" + message.getPayload()));
+			sess.sendMessage(new TextMessage("websocket echo : " + message.getPayload()));
 		}
 	}
 
@@ -38,7 +38,6 @@ public class MyHandler extends TextWebSocketHandler {
 	 */
 	@Override
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-		// List 삭제
 		sessionList.remove(session);
 	}
 }
