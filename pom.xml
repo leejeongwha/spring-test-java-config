@@ -96,6 +96,13 @@
 			<scope>runtime</scope>
 		</dependency>
 		
+		<!-- Spring OXM -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-oxm</artifactId>
+			<version>${spring-framework.version}</version>
+		</dependency>
+		
 		<!-- Spring ORM -->
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -174,6 +181,13 @@
 		    <groupId>commons-io</groupId>
 		    <artifactId>commons-io</artifactId>
 		    <version>2.4</version>
+		</dependency>
+		
+		<!-- Apache Commons Lang -->
+		<dependency>
+		    <groupId>org.apache.commons</groupId>
+		    <artifactId>commons-lang3</artifactId>
+		    <version>3.0</version>
 		</dependency>
 
 	</dependencies>	

@@ -24,7 +24,7 @@ import com.naver.test.orm.repository.BoardUserRepository;
 @WebAppConfiguration
 @ContextConfiguration(classes = AppConfiguration.class)
 @Transactional()
-@ActiveProfiles("jpa")
+@ActiveProfiles("default")
 public class JpaTest {
 	final static Logger logger = LoggerFactory.getLogger(JpaTest.class);
 

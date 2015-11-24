@@ -3,6 +3,8 @@ package com.naver.test.mvc.model;
 import java.time.DayOfWeek;
 import java.util.Date;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.NumberFormat;
 
@@ -58,9 +60,9 @@ public class HelloParam {
 		this.dayEnumFormat = dayEnumFormat;
 	}
 
-	/*
-	 * @Override public String toString() { return
-	 * ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
-	 * }
-	 */
+	@Override
+	public String toString() {
+		return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
+	}
+
 }
