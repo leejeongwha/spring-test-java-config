@@ -11,7 +11,8 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 @Service
-@Scope("prototype")
+@Scope(value = "prototype")
+// @Scope(value = "prototype", proxyMode = ScopedProxyMode.INTERFACES)
 public class TestBOImpl implements TestBO, InitializingBean, DisposableBean {
 	private final Logger logger = LoggerFactory.getLogger(TestBOImpl.class);
 
