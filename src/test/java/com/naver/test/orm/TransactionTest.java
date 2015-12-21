@@ -21,7 +21,7 @@ import com.naver.test.orm.repository.BoardUserRepository;
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration(classes = AppConfiguration.class)
-@ActiveProfiles("jpa")
+@ActiveProfiles("default")
 public class TransactionTest {
 	final static Logger logger = LoggerFactory.getLogger(TransactionTest.class);
 
