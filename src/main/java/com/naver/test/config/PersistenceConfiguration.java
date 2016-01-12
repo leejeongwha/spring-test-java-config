@@ -33,6 +33,8 @@ public class PersistenceConfiguration {
 		Properties props = new Properties();
 		props.setProperty("hibernate.dialect", "org.hibernate.dialect.HSQLDialect");
 		props.setProperty("hibernate.show_sql", "true");
+		props.setProperty("hibernate.format_sql", "true");
+		props.setProperty("hibernate.use_sql_comments", "true");
 
 		containerEntityManagerFactoryBean.setJpaProperties(props);
 		return containerEntityManagerFactoryBean;
