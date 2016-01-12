@@ -11,7 +11,7 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
 @Configuration
-@MapperScan("com.naver.test.orm.mapper")
+@MapperScan("com.naver.test.*.mapper")
 public class MybatisConfiguration {
 	@Bean
 	@Qualifier(value = "mybatisTransaction")

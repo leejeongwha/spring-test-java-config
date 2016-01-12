@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -37,7 +36,7 @@ public class StompController {
 	/**
 	 * 10초마다 broadcasting
 	 */
-	@Scheduled(cron = "*/10 * * * * ?")
+	// @Scheduled(cron = "*/10 * * * * ?")
 	public void sendMessage() {
 		String strMessage = "현재 시작은 " + new Date() + " 입니다.";
 		Message message = new Message();

@@ -20,7 +20,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableTransactionManagement
-@EnableJpaRepositories(basePackages = { "com.naver.test.orm.repository" }, transactionManagerRef = "jpaTransaction")
+@EnableJpaRepositories(basePackages = { "com.naver.test.*.repository" }, transactionManagerRef = "jpaTransaction")
 @Import(value = MybatisConfiguration.class)
 public class PersistenceConfiguration {
 	@Bean
@@ -28,7 +28,7 @@ public class PersistenceConfiguration {
 		LocalContainerEntityManagerFactoryBean containerEntityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
 		containerEntityManagerFactoryBean.setDataSource(dataSource());
 		containerEntityManagerFactoryBean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
-		containerEntityManagerFactoryBean.setPackagesToScan("com.naver.test.orm.entity");
+		containerEntityManagerFactoryBean.setPackagesToScan("com.naver.test.*.entity");
 
 		Properties props = new Properties();
 		props.setProperty("hibernate.dialect", "org.hibernate.dialect.HSQLDialect");
