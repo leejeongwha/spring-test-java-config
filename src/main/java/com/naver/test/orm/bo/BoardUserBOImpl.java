@@ -13,7 +13,7 @@ public class BoardUserBOImpl implements BoardUserBO {
 	private BoardUserRepository boardUserRepository;
 
 	@Override
-	@Transactional(readOnly = false)
+	@Transactional(value = "jpaTransaction", readOnly = false)
 	public void doTransaction() {
 		BoardUser user = makeDummyData();
 		boardUserRepository.save(user);

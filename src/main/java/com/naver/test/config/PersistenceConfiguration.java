@@ -5,9 +5,10 @@ import java.util.Properties;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
@@ -19,8 +20,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableTransactionManagement
-@EnableJpaRepositories(basePackages = { "com.naver.test.orm.repository" })
-@Profile("default")
+@EnableJpaRepositories(basePackages = { "com.naver.test.orm.repository" }, transactionManagerRef = "jpaTransaction")
+@Import(value = MybatisConfiguration.class)
 public class PersistenceConfiguration {
 	@Bean
 	public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
@@ -44,7 +45,8 @@ public class PersistenceConfiguration {
 	}
 
 	@Bean
-	public PlatformTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {
+	@Qualifier(value = "jpaTransaction")
+	public PlatformTransactionManager jpaTransaction(EntityManagerFactory entityManagerFactory) {
 		JpaTransactionManager jpaTransactionManager = new JpaTransactionManager();
 		// jpaTransactionManager.setDataSource(dataSource());
 		jpaTransactionManager.setEntityManagerFactory(entityManagerFactory);

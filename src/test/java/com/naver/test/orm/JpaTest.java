@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -23,8 +22,7 @@ import com.naver.test.orm.repository.BoardUserRepository;
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration(classes = AppConfiguration.class)
-@Transactional()
-@ActiveProfiles("default")
+@Transactional(value = "jpaTransaction")
 public class JpaTest {
 	final static Logger logger = LoggerFactory.getLogger(JpaTest.class);
 
