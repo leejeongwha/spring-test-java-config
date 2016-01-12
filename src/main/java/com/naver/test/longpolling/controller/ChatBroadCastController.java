@@ -42,7 +42,7 @@ public class ChatBroadCastController {
 		return "chat";
 	}
 
-	@RequestMapping(value = "/add", method = RequestMethod.GET)
+	@RequestMapping(value = "/add", method = RequestMethod.POST)
 	@ResponseBody
 	public String add(Message message) {
 		logger.info(message.getContent());

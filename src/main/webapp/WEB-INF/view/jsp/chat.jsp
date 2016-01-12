@@ -47,8 +47,17 @@ function send(event) {
       	if (message.length > 0) {
         	console.log('message send : ' + $('#input').val());
         	
-        	$.get( "/spring-test/chat/add?content=" + message, function() {
-        		$('#input').val("");
+        	var jsonArg = new Object();
+        	jsonArg.content = message;
+        	
+        	$.ajax({
+        		  type: 'POST',
+        		  url: "/spring-test/chat/add",
+        		  data: jsonArg,
+        		  dataType:"json",
+        		  success: function() {
+        			  $('#input').val("");
+        		  }
         	});
      	}
     }
