@@ -7,10 +7,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.LocaleResolver;
+import org.springframework.web.servlet.config.annotation.AsyncSupportConfigurer;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -94,5 +96,15 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
 	private HandlerInterceptor getMvcTestInterceptor() {
 		MvcTestInterceptor interceptor = new MvcTestInterceptor();
 		return interceptor;
+	}
+
+	// Callable Controller 사용을 위함
+	@Override
+	public void configureAsyncSupport(AsyncSupportConfigurer configurer) {
+		ThreadPoolTaskExecutor e = new ThreadPoolTaskExecutor();
+		e.setCorePoolSize(100);
+		e.initialize();
+		configurer.setTaskExecutor(e);
+		configurer.setDefaultTimeout(40000);
 	}
 }
