@@ -14,7 +14,7 @@ import org.springframework.web.context.request.async.DeferredResult;
 import com.naver.test.websock.model.Message;
 
 @Controller
-@RequestMapping("/chat")
+@RequestMapping("/chatDeferred")
 public class ChatBroadCastController {
 	private final Logger logger = LoggerFactory.getLogger(ChatBroadCastController.class);
 
@@ -57,7 +57,7 @@ public class ChatBroadCastController {
 
 	@RequestMapping(value = "/form", method = RequestMethod.GET)
 	public String form() {
-		return "chat";
+		return "chatDeferred";
 	}
 
 	@RequestMapping(value = "/add", method = RequestMethod.POST)

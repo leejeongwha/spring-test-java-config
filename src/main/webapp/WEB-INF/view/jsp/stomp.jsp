@@ -15,6 +15,7 @@
     width: 400px;
     border-width: 1px;
     padding: 5px;
+    overflow-y: scroll;
   }
   input.inset {
     height: 40px;

@@ -15,6 +15,7 @@
     width: 400px;
     border-width: 1px;
     padding: 5px;
+    overflow-y: scroll;
   }
   input.inset {
     height: 40px;
@@ -36,7 +37,7 @@
 <script type="text/javascript">
 (function poll(){
 	console.log("send")
-    $.ajax({ url: "/spring-test/chat/broadcast", success: function(data) {
+    $.ajax({ url: "/spring-test/chatAsyncTask/broadcast", success: function(data) {
     	$('#chat').append(JSON.stringify(data.content) + "\n");
     }, dataType: "json", complete: poll, timeout: 30000 });
 })();
@@ -52,7 +53,7 @@ function send(event) {
         	
         	$.ajax({
         		  type: 'POST',
-        		  url: "/spring-test/chat/add",
+        		  url: "/spring-test/chatAsyncTask/add",
         		  data: jsonArg,
         		  dataType:"json",
         		  success: function() {

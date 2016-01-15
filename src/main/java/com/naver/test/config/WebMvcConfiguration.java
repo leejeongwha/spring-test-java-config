@@ -98,13 +98,12 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
 		return interceptor;
 	}
 
-	// Callable Controller 사용을 위함
-	@Override
+	// AsyncTask Controller 사용을 위함
 	public void configureAsyncSupport(AsyncSupportConfigurer configurer) {
 		ThreadPoolTaskExecutor e = new ThreadPoolTaskExecutor();
 		e.setCorePoolSize(100);
 		e.initialize();
 		configurer.setTaskExecutor(e);
-		configurer.setDefaultTimeout(40000);
+		configurer.setDefaultTimeout(40000L);
 	}
 }

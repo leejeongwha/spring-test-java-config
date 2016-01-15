@@ -5,7 +5,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SockJS</title>
+<title>Chat</title>
 
 <style>
   .inset {
@@ -33,28 +33,33 @@
 <input id="input" type="text" onkeydown="send(event)" placeholder="press enter to send" class="inset">
 
 <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
-<script src="//cdn.jsdelivr.net/sockjs/1.0.0/sockjs.min.js"></script>
 
 <script type="text/javascript">
-var sock = new SockJS('/spring-test/echo');
-sock.onopen = function() {
-  console.log('socket open');
-}
-sock.onmessage = function(message) {
-  console.log('message received : ' + message.data);
-  $('#chat').append(message.data + "\n");
-}
-sock.onclose = function(e) {
-  console.log('socket close');
-}
+(function poll(){
+	console.log("send")
+    $.ajax({ url: "/spring-test/chatDeferred/broadcast", success: function(data) {
+    	$('#chat').append(JSON.stringify(data.content) + "\n");
+    }, dataType: "json", complete: poll, timeout: 30000 });
+})();
 
 function send(event) {
 	if (event.keyCode == 13 || event.which == 13) {
 		var message = $('#input').val();
       	if (message.length > 0) {
         	console.log('message send : ' + $('#input').val());
-        	sock.send(message);
-        	$('#input').val("");
+        	
+        	var jsonArg = new Object();
+        	jsonArg.content = message;
+        	
+        	$.ajax({
+        		  type: 'POST',
+        		  url: "/spring-test/chatDeferred/add",
+        		  data: jsonArg,
+        		  dataType:"json",
+        		  success: function() {
+        			  $('#input').val("");
+        		  }
+        	});
      	}
     }
 }
