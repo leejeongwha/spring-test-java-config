@@ -58,4 +58,22 @@ public class HelloController {
 		model.addAttribute("message", param.getMessage());
 		return "showMessage";
 	};
+
+	@RequestMapping("hello5")
+	public String hello5(Model model, HelloParam param) {
+		model.addAttribute("message", param.getMessage());
+
+		logger.info("modelAttribute : " + model.asMap().toString());
+		return "showMessage";
+	};
+
+	/**
+	 * RequestMapping보다 먼저 수행된다.
+	 * 
+	 * @param model
+	 */
+	@ModelAttribute
+	public void addAttributes(Model model) {
+		model.addAttribute("msg", "Welcome to My Country");
+	}
 }

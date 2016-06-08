@@ -9,5 +9,6 @@
 	<body>
 		<h2>Hello!!</h2>
 		<h4>${message}</h4>
+		<h4>${msg}</h4>
 	</body>
 </html>
