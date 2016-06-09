@@ -15,6 +15,13 @@ import com.naver.test.mvc.model.HelloParam;
 public class GlobalAdviceController {
 	private final Logger logger = LoggerFactory.getLogger(HelloController.class);
 
+	/**
+	 * /spring-test/mvc/conversion?lightYn=on&dateFormat=2016-05-01&priceFormat=
+	 * 3,000&dayEnumFormat=SUNDAY&phone=0311234567
+	 * 
+	 * @param helloParam
+	 * @return
+	 */
 	@RequestMapping("/conversion")
 	public String date(HelloParam helloParam) {
 		logger.info("lightYn : {}", helloParam.getLightYn().booleanValue());
@@ -24,6 +31,9 @@ public class GlobalAdviceController {
 		logger.info("priceFormat : {}", helloParam.getPriceFormat());
 
 		logger.info("enumFormat : {}", helloParam.getDayEnumFormat().getDisplayName(TextStyle.FULL, Locale.KOREA));
+
+		// Custom Formatter 등록(FormatTelephone annotation)
+		logger.info("customFormatter : {}", helloParam.getPhone());
 
 		return "success";
 	};

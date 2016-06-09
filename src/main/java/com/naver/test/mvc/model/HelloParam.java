@@ -8,6 +8,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.NumberFormat;
 
+import com.naver.test.formatter.FormatTelephone;
+
 public class HelloParam {
 	private String message;
 
@@ -19,6 +21,9 @@ public class HelloParam {
 	private int priceFormat;
 
 	private DayOfWeek dayEnumFormat;
+
+	@FormatTelephone("(###)###-####")
+	private String phone;
 
 	public String getMessage() {
 		return message;
@@ -58,6 +63,14 @@ public class HelloParam {
 
 	public void setDayEnumFormat(DayOfWeek dayEnumFormat) {
 		this.dayEnumFormat = dayEnumFormat;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
 
 	@Override

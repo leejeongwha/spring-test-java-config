@@ -8,13 +8,13 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.format.FormatterRegistry;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.AsyncSupportConfigurer;
-import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
@@ -22,6 +22,7 @@ import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
+import com.naver.test.formatter.FormatTelephoneAnnotationFormatterFactory;
 import com.naver.test.mvc.interceptor.MvcTestInterceptor;
 
 //@EnableWebMvc : WebMvcConfigurerAdapter를 상속받을 경우에는 주석 해제 필
@@ -42,10 +43,12 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
 		registry.addResourceHandler("/resources/**").addResourceLocations("/resources/").setCachePeriod(31556926);
 	}
 
-	@Override
-	public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
-		configurer.enable();
-	}
+	// @Override
+	// public void
+	// configureDefaultServletHandling(DefaultServletHandlerConfigurer
+	// configurer) {
+	// configurer.enable();
+	// }
 
 	@Bean
 	public MessageSource messageSource() {
@@ -105,5 +108,10 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
 		e.initialize();
 		configurer.setTaskExecutor(e);
 		configurer.setDefaultTimeout(40000L);
+	}
+
+	@Override
+	public void addFormatters(FormatterRegistry registry) {
+		registry.addFormatterForFieldAnnotation(new FormatTelephoneAnnotationFormatterFactory());
 	}
 }
