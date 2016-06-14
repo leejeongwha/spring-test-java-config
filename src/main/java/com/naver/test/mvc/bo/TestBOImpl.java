@@ -21,6 +21,10 @@ public class TestBOImpl implements TestBO, InitializingBean, DisposableBean {
 		logger.info("test BO executed!!");
 	};
 
+	public TestBOImpl() {
+		logger.info("TestBOImpl Constructor");
+	}
+
 	@PostConstruct
 	public void postConstruct() throws Exception {
 		logger.info("postConstruct");
@@ -28,7 +32,7 @@ public class TestBOImpl implements TestBO, InitializingBean, DisposableBean {
 
 	@PreDestroy
 	public void preDestroy() throws Exception {
-		logger.info("postConstruct");
+		logger.info("preDestroy");
 	}
 
 	@Override

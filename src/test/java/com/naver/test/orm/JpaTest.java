@@ -97,4 +97,21 @@ public class JpaTest {
 			logger.info("board user : {} : {}", user.getId(), user.getUserName());
 		}
 	}
+
+	@Test
+	public void countByTest() {
+		Long count = boardUserRepository.countByUserName("tom");
+		logger.info("board user count : {}", count);
+	}
+
+	@Test
+	public void queryTest3() {
+		BoardUser boardUser = new BoardUser();
+		boardUser.setUserName("m");
+
+		List<BoardUser> findAll = boardUserRepository.findByUserNameEndsWith3(boardUser);
+		for (BoardUser user : findAll) {
+			logger.info("board user : {} : {}", user.getId(), user.getUserName());
+		}
+	}
 }
