@@ -10,6 +10,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.naver.test.config.AppConfiguration;
 import com.naver.test.oxm.bo.Jaxb2MarshallerService;
+import com.naver.test.oxm.model.BoardUser;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
@@ -29,6 +30,6 @@ public class Jaxb2MarshallerTest {
 
 	@Test
 	public void testUnmarshall() throws Exception {
-		jaxb2MarshallerService.unmarshal();
+		jaxb2MarshallerService.unmarshal(BoardUser.class);
 	}
 }

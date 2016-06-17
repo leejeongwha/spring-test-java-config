@@ -35,10 +35,10 @@ public class Jaxb2MarshallerService {
 		logger.info(string.toString());
 	}
 
-	public void unmarshal() {
+	public <T> void unmarshal(Class<T> clazz) {
 		String body = "<?xml version='1.0' encoding='UTF-8' standalone='yes'?><boardUser><age>20</age><id>1</id><passwd>1234</passwd><role>ADMIN</role><userName>Jane</userName></boardUser>";
-		BoardUser boardUser = (BoardUser) jaxb2Marshaller.unmarshal(new StreamSource(new StringReader(body)));
+		T t = (T) jaxb2Marshaller.unmarshal(new StreamSource(new StringReader(body)));
 
-		logger.info(boardUser.toString());
+		logger.info(t.toString());
 	}
 }

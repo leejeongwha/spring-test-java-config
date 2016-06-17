@@ -50,7 +50,9 @@ public class AppConfiguration implements SchedulingConfigurer, AsyncConfigurer {
 	@Bean
 	public Jaxb2Marshaller jaxb2Marshaller() {
 		Jaxb2Marshaller marshaller = new Jaxb2Marshaller();
-		marshaller.setClassesToBeBound(new Class[] { com.naver.test.oxm.model.BoardUser.class });
+		// marshaller.setClassesToBeBound(new Class[] {
+		// com.naver.test.oxm.model.BoardUser.class });
+		marshaller.setPackagesToScan("com.naver.**.model");
 		return marshaller;
 	}
 
