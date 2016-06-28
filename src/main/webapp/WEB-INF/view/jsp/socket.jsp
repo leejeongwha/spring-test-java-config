@@ -138,6 +138,12 @@ function Chat(options){
 	this.write = function(dataObject){
 		this.log("nickName :" + dataObject.userId + ", message :" + dataObject.message);
 		
+		if( this.currentChatItemWithOnair === null && dataObject.onair == 1 ){
+			var currentChatItem = $('<div id=' + this.createChatItemId(new Date().getTime()) + '>');
+			this.showArea.append(currentChatItem);
+			this.currentChatItemWithOnair = currentChatItem;
+		}
+		
 		if( this.currentChatItemWithOnair !== null ){
 			this.currentChatItemWithOnair.html(dataObject.userId + ' : ' + dataObject.message);
 		}else{
@@ -251,12 +257,6 @@ function Chat(options){
 		var message = this.inputArea.val();
 		if (message.length <= 0) {
 			return;
-		}
-		
-		if( this.currentChatItemWithOnair === null ){
-			var currentChatItem = $('<div id=' + this.createChatItemId(new Date().getTime()) + '>');
-			this.showArea.append(currentChatItem);
-			this.currentChatItemWithOnair = currentChatItem;
 		}
 		
 		var onairParameter = 1;
