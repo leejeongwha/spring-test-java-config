@@ -62,27 +62,32 @@
 	</tr>
 	<tr>
 		<td>
-			<form id="private_chat1">
-				userTimeStamp : <input id="userTimeStamp1" name="userTimeStamp"/>
-			<input id="input" name="message" type="text" onkeydown="send(event)" placeholder="press enter to send" class="inset">
+			<form id="form1" onsubmit="return false;">
+			     <input id="input_chat1_area" name="message" type="text" placeholder="press enter to send" class="inset">
 			</form>
 		</td>
 		<td> **
 		</td>
 		<td>
-			<form id="private_chat2">
-				<input id="userId" name="userId" value="12345"/>
-				<select name="type">
-					<option value="all">all</option>
-				</select>
-
-				userTimeStamp : <input id="userTimeStamp2" name="userTimeStamp"/>
-				<input id="input2" name="message" type="text" onkeyup="send2(event)" placeholder="press to send" class="inset">
-				<p>Byte size: <span id="byteSize"></span></p>
-				<p>live:<input type="text" id="onair2" name="onair" value="0"/> </p>
+			<form id="form2" onsubmit="return false;">
+				<input id="input_chat2_area" name="message" type="text" placeholder="press to send" class="inset">
 			</form>
 		</td>
 	</tr>
+    <tr>
+        <td>
+            <form id="form3" onsubmit="return false;">
+                 <input id="input_chat3_area" name="message" type="text" placeholder="press enter to send" class="inset">
+            </form>
+        </td>
+        <td> **
+        </td>
+        <td>
+            <form id="form4" onsubmit="return false;">
+                <input id="input_chat4_area" name="message" type="text" placeholder="press to send" class="inset">
+            </form>
+        </td>
+    </tr>
 </table>
 
 <script src="/spring-test/resources/static/js/jquery.js"></script>
@@ -92,267 +97,308 @@
 <script src="//cdn.jsdelivr.net/sockjs/1.0.0/sockjs.min.js"></script>
 
 <script type="text/javascript">
-
-$(document).ready(function () {
-
-	setTimeStamp($('#userTimeStamp1'));
-	setTimeStamp($('#userTimeStamp2'));
-
-});
-
-var sock = new SockJS('/spring-test/chat1');
-
-sock.onopen = function() {
-  console.log('socket open');
-}
-
-/////////////////////////////////////////////////
-sock.onmessage = function(message) {
-  var jsonObj = JSON.parse(message.data);
-
-  var curDiv = $("#chat1 #"+jsonObj.userTimeStamp);
-
-  if(curDiv.text() == '' )  {
-	  $("#chat1").append('<div id='+jsonObj.userTimeStamp+'>' + getMessage(jsonObj) + '</div>');
-	  preDiv.css('background','#ffffff');
-  }else{
-	  preDiv = $("#chat1 #"+jsonObj.userTimeStamp);
-	  curDiv.text(getMessage(jsonObj)).css('background','#8ec252');
-  }
-
-  $('#chatMain').append(getMessage(jsonObj) + "\n");
-
-  chatScrollTop();
-
-}
-
-sock.onclose = function(e) {
-  console.log('socket close');
-}
-
-function getMessage(jsonObj) {
-	return jsonObj.userId + '>>' + jsonObj.message;
-}
-
-// jquery function 으로 대체
-function chatScrollTop() {
-	var wtf1    = $('#chat1');
-	wtf1.scrollTop(wtf1[0].scrollHeight);
-
-	var wtf2    = $('#chat2');
-	wtf2.scrollTop(wtf2[0].scrollHeight);
-
-	var wtfMain    = $('#chatMain');
-	wtfMain.scrollTop(wtfMain[0].scrollHeight);
-
-}
-
-
-
-
-function send(event) {
-	if (event.keyCode == 13 || event.which == 13) {
-		var formData = $('#private_chat1').serializeJSON();
-		var param = JSON.stringify(formData);
-
-		var message = $('#input').val();
-      	if (message.length > 0) {
-        	sock.send(param);
-        	$('#input').val("");
-     	}
-		setTimeStamp($('#userTimeStamp1'));
-    }
-}
-
-////////////////////////////////
-
-
-
-var sock2 = new SockJS('/spring-test/chat2');
-sock2.onopen = function() {
-  console.log('socket open');
-}
-
-var preDiv, preMainDiv = "";
-sock2.onmessage = function(message) {
-  //console.log('message received : ' + message.data);
-  //message.data을 JSON으로 파싱하여,
-  // var result = toJSON(message.data);
-  var jsonObj = JSON.parse(message.data);
-  //console.log(jsonObj.userTimeStamp);
-  //console.log(jsonObj.message);
-  // result.userTimeStamp 단위로 div를 생성한다.
-  // userTimeStamp가 같으면 같은 div를 갱신,
-  // 없다면, 새로운 userTimeStamp값으로 div id를 추가한다.
-  //$('#chat2').append(message.data + "\n");
-
-  var curDiv = $("#chat2 #"+jsonObj.id+'_'+jsonObj.userTimeStamp);
-  var curMainDiv = $("#chatMain #"+jsonObj.id+'_'+jsonObj.userTimeStamp);
-
-  //console.log(curDiv);
-  //console.log(curDiv.text());
-
-  //.val() == undefined || curDiv.val().length == 0
-  if(curDiv.text() == '' )  {
-	  $("#chat2").append('<div id='+jsonObj.id+'_'+jsonObj.userTimeStamp+'>'+jsonObj.userId + '>>' + jsonObj.message+'</div>');
-	  preDiv.css('background','#ffffff');
-//	  $("#chatMain").append('<div id='+jsonObj.id+'_'+jsonObj.userTimeStamp+'>'+jsonObj.userId + '>>' + jsonObj.message+'</div>');
-	  preMainDiv.css('background','#ffffff');
-  }else{
-	  curDiv.text(jsonObj.userId + '>>' + jsonObj.message).css('background','#8ec252');
-	  preDiv = $("#chat2 #"+jsonObj.id+'_'+jsonObj.userTimeStamp);
-//	  curMainDiv.text(jsonObj.userId + '>>' + jsonObj.message).css('background','#8ec252');
-	  preMainDiv = $("#chat2 #"+jsonObj.id+'_'+jsonObj.userTimeStamp);
-  }
-
-  if(jsonObj.onair === 0) {
-	  $("#chatMain").append('<div id='+jsonObj.id+'_'+jsonObj.userTimeStamp+' align="right" >'+jsonObj.message + '<<' + jsonObj.userId+'</div>');
-	  curMainDiv.css('background','#ffffff');
-  }
-
-  chatScrollTop();
-
-}
-
-sock2.onclose = function(e) {
-  console.log('socket close');
-}
-
-
-
-var p1_len = 0;
-var live_on = false;
-
-function send2(event) {
-
-	if (event.keyCode == 13 || event.which == 13) {
-		$('#onair2').val("0");
-	}else{
-		$('#onair2').val("1");
-	}
-
-	var formData = $('#private_chat2').serializeJSON();
-	var param = JSON.stringify(formData);
-
-	var message = $('#input2').val();
-
-	$('#byteSize').text(message.length);
-
-//    if (message.length != p1_len ) {
-      	console.log('message send : ' +message.length);
-      	sock2.send(param);
-//   	}
-
-//	p1_len = message.length;
-
-	if (event.keyCode == 13 || event.which == 13) {
-		$('#input2').val("");
-		$('#byteSize').innerHTML = "";
-
-		//p1_len = 0 ;
-
-		setTimeStamp($('#userTimeStamp2'));
-	}
-}
-
-function setTimeStamp(obj) {
-	var d = new Date();
-	obj.val(d.getTime());
-}
-
-function send21(event) {
-	var formData = $('#private_chat2').serializeJSON();
-	var param = JSON.stringify(formData);
-
-	var message = $('#input2').val();
-
-	$('#byteSize').text(message.length);
-
-    if (message.length != p1_len ) {
-      	console.log('message send : ' +message.length);
-      	sock2.send(param);
-   	}
-
-	p1_len = message.length;
-
-	if (event.keyCode == 13 || event.which == 13) {
-		$('#input2').val("");
-		$('#byteSize').innerHTML = "";
-
-		p1_len = 0 ;
-
-		var d = new Date();
-		var n = d.getTime();
-		$('#userTimeStamp').val(n);
-		live_on = true;
-	}else {
-		live_on = false;
-	}
-}
-
-//미사용
-function isHan(str){
-	for(var i = 0; i < str.length; i++){
-		var chr = str.substr(i,1);
-		chr = escape(chr);
-		if(chr.charAt(1) == "u"){
-			chr = chr.substr(2, (chr.length - 1));
-			if((chr < "AC00") || (chr > "D7A3"))
-			return false;
-		}
-		else{
-			return false;
-		}
-	}
-	return true;
-}
-
-function ForumPanel(){
+function Chat(options){
 
 	this.init = function(options){
-
-		this.sock = new SockJS('/spring-test/chat1');
-		this.onOpen = function() {
-			  console.log('socket open');
+		
+		this.EVENT = {
+				"update" : "update"
 		};
+		
+		this.options = {
+			debug : false,
+			userId : "kim76",
+			onair : false,
+			type : "all",
+			apiUrl : "/spring-test/chat1",
+			showAreaId : "chat1",
+			inputAreaId : "input_chat1_area"
+		};
+		$.extend(this.options,options);
+
+		this.sock = new SockJS(this.options.apiUrl);
+		
+		this.showArea = $("#" + this.options.showAreaId);
+		this.inputArea = $("#" + this.options.inputAreaId);
+		
+		this.eventHandler = {};
+		
+		this.chatItem = [];
+		
+		this.currentChatItemWithOnair = null;
+
+		this.bindEvents();
+
+	};
+	
+	this.createChatItemId = function(timeStamp){
+		return 	this.options.userId + "-chat-" + timeStamp;
+	};
+
+	this.write = function(dataObject){
+		this.log("nickName :" + dataObject.userId + ", message :" + dataObject.message);
+		
+		if( this.currentChatItemWithOnair !== null ){
+			this.currentChatItemWithOnair.html(dataObject.userId + ' : ' + dataObject.message);
+		}else{
+			var elId = this.createChatItemId(dataObject.userTimeStamp);
+			var elChatOneLine = '<div id=' + elId + '>' + dataObject.userId + ' : ' + dataObject.message + '</div>';
+			this.showArea.append(elChatOneLine);
+		}
+		
+		if ( dataObject.onair == 0 ){
+			this.currentChatItemWithOnair = null;
+			this.trigger(this.EVENT.update,{
+				"userId" : this.options.userId , 
+				"data" : dataObject
+			});
+			this.inputArea.val("");
+		}
+	};
+
+	this.on = function(eventName,handler){
+
+		if(typeof eventName !== "string" || typeof handler !== "function"){
+			this.log("파라미터가 유효하지 않음 eventName : " + eventName + ", handler : " + handler);
+			return;
+		}
+
+		var handlerList = this.eventHandler[eventName];
+		if (typeof handlerList === "undefined") {
+			handlerList = this.eventHandler[eventName] = [];
+		}
+
+		this.log("이벤트 핸들러 추가 eventName : " + eventName + ", handler : " + handler);
+		handlerList.push(handler);
+
+	};
+
+	this.trigger = function(eventName,customEvent){
+		customEvent = customEvent || {};
+		var handlerList = this.eventHandler[eventName] || [];
+		var hasHandlerList = handlerList.length > 0;
+
+		if (!hasHandlerList) {
+			return true;
+		}
+
+		// 이벤트를 떼어낼때 문제가 발생할 수 있기에 해당 핸들러를 모두 복사해 사용
+		handlerList = handlerList.concat();
+
+		customEvent.eventType = eventName;
+
+		var isCanceled = false;
+		var arg = [customEvent];
+		var i;
+		var len;
+		var handler;
+
+		customEvent.stop = function() {
+			isCanceled = true;
+		};
+
+		// 해당 메소드의 인자가 2개 이상일 경우 3번째부터는 arg에 넣어둔다.
+		if ((len = arguments.length) > 2) {
+			arg = arg.concat(Array.prototype.slice.call(arguments, 2, len));
+		}
+
+		for (i = 0; handler = handlerList[i]; i++) {
+			handler.apply(this, arg);
+			this.log("이벤트 동작 eventName : " + eventName + ", handler : " + handler + ", customEvent : " + customEvent);
+		}
+
+		return !isCanceled;
+	},
+	
+	this.onSockOpen = function(e){
+		this.log("소켓열기");
+	};
+	
+	this.onSockClose = function(e){
+		this.log("소켓닫기");
+	};
+	
+	this.onSockMessage = function(e){
+		
+		var dataObject = JSON.parse(e.data);
+		this.write(dataObject);
+		
+	};
+	
+	this.send = function(e){
+		if (e.keyCode !== 13 && event.which !== 13) {
+			return;
+		}
+		
+		var message = this.inputArea.val();
+		if (message.length <= 0) {
+			return;
+		}
+		
+		this.sock.send(JSON.stringify({
+			"userId" : this.options.userId, 
+			"userTimeStamp" : new Date().getTime(),
+			"message" : message,
+			"onair" : 0,
+			"type": this.options.type 
+		}));
+		
+	};
+	
+	this.sendOnair = function(e){
+		
+		//입력된 문자가 없으면 튕김
+		var message = this.inputArea.val();
+		if (message.length <= 0) {
+			return;
+		}
+		
+		if( this.currentChatItemWithOnair === null ){
+			var currentChatItem = $('<div id=' + this.createChatItemId(new Date().getTime()) + '>');
+			this.showArea.append(currentChatItem);
+			this.currentChatItemWithOnair = currentChatItem;
+		}
+		
+		var onairParameter = 1;
+		
+		if (e.keyCode === 13 || event.which === 13) {
+			onairParameter = 0;
+		}
+		
+		this.sock.send(JSON.stringify({
+			"userId" : this.options.userId, 
+			"userTimeStamp" : this.currentChatItemIdWithOnair,
+			"message" : message,
+			"onair" : onairParameter,
+			"type": this.options.type 
+		}));
+		
+		return;
+	};
+
+	this.onKeyDown = function(e){
+		
+		if (this.options.onair) {
+			this.sendOnair(e);
+		}else{
+			this.send(e);
+		}
+		
+	};
+
+	this.bindEvents = function(){
+		this.sock.onopen = $.proxy(this.onSockOpen,this);
+		this.sock.onclose = $.proxy(this.onSockClose,this);
+		this.sock.onmessage = $.proxy(this.onSockMessage,this);
+		$("#" + this.options.inputAreaId).keydown($.proxy(this.onKeyDown,this));
+	};
+
+	this.log = function(message){
+		if(this.options.debug){
+			console.log(message);
+		}
+	};
+
+	($.proxy(function(options){
+		this.init(options);
+	},this))(options);
+
+}
+
+function Forum(options){
+
+	this.init = function(options){
+		this.options = {
+			showAreaId : "chatMain",
+			debug : false
+		};
+		$.extend(this.options,options);
+
+		this.showArea = $("#" + this.options.showAreaId);
+		
+		this.chats = [];
+
+		this.bindEvents();
 
 	};
 
 	this.bindEvents = function(){
 
-		this.sock.onopen = this.onOpen;
-		this.sock.onmessage = function(){
-			if(true){
+	};
 
-			}else{
+	this.write = function(dataObject){
+		this.log("nickName :" + dataObject.userId + ", message :" + dataObject.message);
+		var elChatOneLine = '<div id=' + dataObject.userTimeStamp + '>' + dataObject.userId + ' : ' + dataObject.message + '</div>';
+		this.showArea.append(elChatOneLine);
+	};
 
-			}
+	this.onUpdate = function(e){
+		this.write(e.data);
+	};
+
+	this.addChat = function(chat){
+		chat.on("update",$.proxy(this.onUpdate,this));
+		this.chats.push(chat);
+	};
+
+	this.log = function(message){
+		if(this.options.debug){
+			console.log(message);
 		}
 	};
 
-	this.reactiveMessage = function(){
-
-	};
-
-	this.nonReactiveMessage = function(){
-
-	};
+	($.proxy(function(options){
+		this.init(options);
+	},this))(options);
 
 }
 
-var panel1 = new ForumPanel(["",""]);
-var panel2 = new ForumPanel(["",""]);
+$(document).ready(function(){
+	var testChat1 = new Chat({
+		debug : true,
+		userId : "chat1",
+		apiUrl : "/spring-test/chat1",
+		showAreaId : "chat1",
+		inputAreaId : "input_chat1_area",
+		onair : false
+	});
 
-function ForumFrame(){
+	var testChat2 = new Chat({
+		debug : true,
+		userId : "chat2",
+		apiUrl : "/spring-test/chat2",
+		showAreaId : "chat2",
+		inputAreaId : "input_chat2_area",
+		onair : true
+	});
+	
+	var testChat3 = new Chat({
+		debug : true,
+		userId : "chat3",
+		apiUrl : "/spring-test/chat3",
+		showAreaId : "chat3",
+		inputAreaId : "input_chat3_area",
+		onair : true
+	});
+	
+	var testChat4 = new Chat({
+		debug : true,
+		userId : "chat4",
+		apiUrl : "/spring-test/chat4",
+		showAreaId : "chat4",
+		inputAreaId : "input_chat4_area",
+		onair : true
+	});
 
-}
+	var testForum = new Forum({
+		debug : true
+	});
 
-var frame = new ForumFrame(["",""]);
-frame.setPanel(panel1);
-frame.setPanel(panel2);
-
-
+	testForum.addChat(testChat1);
+	testForum.addChat(testChat2);
+	testForum.addChat(testChat3);
+	testForum.addChat(testChat4);
+});
 </script>
-
 </body>
 </html>
