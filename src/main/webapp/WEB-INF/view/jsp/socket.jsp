@@ -1,11 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<% /* //hosts:port/contextName/forum/{pan}/{user} */ %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SockJS</title>
+<title>::Forum::</title>
 
 <style>
   .inset {
@@ -18,7 +19,7 @@
     overflow-y: scroll;
   }
   input.inset {
-    height: 40px;
+    height: 60px;
   }
   div.inset {
     height: 300px;
@@ -51,8 +52,8 @@
 	</tr>
 	<tr>
 		<td>패널1:***님<div id="chat1" class="inset"></div></td>
-		<td rowspan=2 valign=top>
-			<div id="chatMain" class="inset"></div>
+		<td rowspan="2" valign=top>
+			<div id="chatMain" class="inset" style="height:700px"></div>
 		</td>
 		<td>패널2:***대학 교수<div id="chat2" class="inset"></div></td>
 	</tr>
@@ -62,32 +63,34 @@
 	</tr>
 	<tr>
 		<td>
-			<form id="form1" onsubmit="return false;">
-			     <input id="input_chat1_area" name="message" type="text" placeholder="press enter to send" class="inset">
-			</form>
-		</td>
-		<td> **
 		</td>
 		<td>
-			<form id="form2" onsubmit="return false;">
-				<input id="input_chat2_area" name="message" type="text" placeholder="press to send" class="inset">
+		<p align="right">패널 ${id}님 토론창 --></p>
+		</td>
+		<td>
+			<form id="form${id}" onsubmit="return false;">
+			OnAir <input type=checkbox id=onAir value="1" checked/><br/>
+			     <textarea wrap="hard" id="input_chat${id}_area" name="message" placeholder="press enter to send(live chat : OnAir check!!)" class="inset"></textarea>
 			</form>
 		</td>
+<!-- 		<td> -->
+<!-- 			<form id="form2" onsubmit="return false;"> -->
+<!-- 				<input id="input_chat2_area" name="message" type="text" placeholder="press to send" class="inset"> -->
+<!-- 			</form> -->
+<!-- 		</td> -->
 	</tr>
-    <tr>
-        <td>
-            <form id="form3" onsubmit="return false;">
-                 <input id="input_chat3_area" name="message" type="text" placeholder="press enter to send" class="inset">
-            </form>
-        </td>
-        <td> **
-        </td>
-        <td>
-            <form id="form4" onsubmit="return false;">
-                <input id="input_chat4_area" name="message" type="text" placeholder="press to send" class="inset">
-            </form>
-        </td>
-    </tr>
+<!--     <tr> -->
+<!--         <td> -->
+<!--             <form id="form3" onsubmit="return false;"> -->
+<!--                  <input id="input_chat3_area" name="message" type="text" placeholder="press enter to send" class="inset"> -->
+<!--             </form> -->
+<!--         </td> -->
+<!--         <td> -->
+<!--             <form id="form4" onsubmit="return false;"> -->
+<!--                 <input id="input_chat4_area" name="message" type="text" placeholder="press to send" class="inset"> -->
+<!--             </form> -->
+<!--         </td> -->
+<!--     </tr> -->
 </table>
 
 <script src="/spring-test/resources/static/js/jquery.js"></script>
@@ -100,11 +103,11 @@
 function Chat(options){
 
 	this.init = function(options){
-		
+
 		this.EVENT = {
 				"update" : "update"
 		};
-		
+
 		this.options = {
 			debug : false,
 			userId : "kim76",
@@ -117,45 +120,46 @@ function Chat(options){
 		$.extend(this.options,options);
 
 		this.sock = new SockJS(this.options.apiUrl);
-		
+
 		this.showArea = $("#" + this.options.showAreaId);
 		this.inputArea = $("#" + this.options.inputAreaId);
-		
+
 		this.eventHandler = {};
-		
+
 		this.chatItem = [];
-		
+
 		this.currentChatItemWithOnair = null;
 
 		this.bindEvents();
 
 	};
-	
+
 	this.createChatItemId = function(timeStamp){
 		return 	this.options.userId + "-chat-" + timeStamp;
 	};
 
 	this.write = function(dataObject){
 		this.log("nickName :" + dataObject.userId + ", message :" + dataObject.message);
-		
+
 		if( this.currentChatItemWithOnair === null && dataObject.onair == 1 ){
 			var currentChatItem = $('<div id=' + this.createChatItemId(new Date().getTime()) + '>');
 			this.showArea.append(currentChatItem);
 			this.currentChatItemWithOnair = currentChatItem;
 		}
-		
+
 		if( this.currentChatItemWithOnair !== null ){
 			this.currentChatItemWithOnair.html(dataObject.userId + ' : ' + dataObject.message);
+			this.currentChatItemWithOnair.fadeTo('slow', 0.5).fadeTo('slow', 1.0);
 		}else{
 			var elId = this.createChatItemId(dataObject.userTimeStamp);
 			var elChatOneLine = '<div id=' + elId + '>' + dataObject.userId + ' : ' + dataObject.message + '</div>';
 			this.showArea.append(elChatOneLine);
 		}
-		
+
 		if ( dataObject.onair == 0 ){
 			this.currentChatItemWithOnair = null;
 			this.trigger(this.EVENT.update,{
-				"userId" : this.options.userId , 
+				"userId" : this.options.userId ,
 				"data" : dataObject
 			});
 			this.inputArea.val("");
@@ -215,82 +219,83 @@ function Chat(options){
 
 		return !isCanceled;
 	},
-	
+
 	this.onSockOpen = function(e){
 		this.log("소켓열기");
 	};
-	
+
 	this.onSockClose = function(e){
 		this.log("소켓닫기");
 	};
-	
+
 	this.onSockMessage = function(e){
-		
+
 		var dataObject = JSON.parse(e.data);
 		this.write(dataObject);
-		
+
 	};
-	
+
 	this.send = function(e){
 		if (e.keyCode !== 13 && event.which !== 13) {
 			return;
 		}
-		
+
 		var message = this.inputArea.val();
 		if (message.length <= 0) {
 			return;
 		}
-		
+
 		this.sock.send(JSON.stringify({
-			"userId" : this.options.userId, 
+			"userId" : this.options.userId,
 			"userTimeStamp" : new Date().getTime(),
 			"message" : message,
 			"onair" : 0,
-			"type": this.options.type 
+			"type": this.options.type
 		}));
-		
+
 	};
-	
+
 	this.sendOnair = function(e){
-		
+
 		//입력된 문자가 없으면 튕김
 		var message = this.inputArea.val();
 		if (message.length <= 0) {
 			return;
 		}
-		
+
 		var onairParameter = 1;
-		
+
 		if (e.keyCode === 13 || event.which === 13) {
 			onairParameter = 0;
 		}
-		
+
 		this.sock.send(JSON.stringify({
-			"userId" : this.options.userId, 
+			"userId" : this.options.userId,
 			"userTimeStamp" : this.currentChatItemIdWithOnair,
 			"message" : message,
 			"onair" : onairParameter,
-			"type": this.options.type 
+			"type": this.options.type
 		}));
-		
+
 		return;
 	};
 
-	this.onKeyDown = function(e){
-		
-		if (this.options.onair) {
+	this.onKeyUp = function(e){
+		var onair = $("#onAir").is(":checked");
+// 		if (this.options.onair) {
+		if(onair) {
 			this.sendOnair(e);
 		}else{
 			this.send(e);
 		}
-		
+
 	};
 
 	this.bindEvents = function(){
 		this.sock.onopen = $.proxy(this.onSockOpen,this);
 		this.sock.onclose = $.proxy(this.onSockClose,this);
 		this.sock.onmessage = $.proxy(this.onSockMessage,this);
-		$("#" + this.options.inputAreaId).keydown($.proxy(this.onKeyDown,this));
+		$("#" + this.options.inputAreaId).keyup($.proxy(this.onKeyUp,this));
 	};
 
 	this.log = function(message){
@@ -315,7 +320,7 @@ function Forum(options){
 		$.extend(this.options,options);
 
 		this.showArea = $("#" + this.options.showAreaId);
-		
+
 		this.chats = [];
 
 		this.bindEvents();
@@ -360,7 +365,7 @@ $(document).ready(function(){
 		apiUrl : "/spring-test/chat1",
 		showAreaId : "chat1",
 		inputAreaId : "input_chat1_area",
-		onair : false
+		onair : true
 	});
 
 	var testChat2 = new Chat({
@@ -371,7 +376,7 @@ $(document).ready(function(){
 		inputAreaId : "input_chat2_area",
 		onair : true
 	});
-	
+
 	var testChat3 = new Chat({
 		debug : true,
 		userId : "chat3",
@@ -380,7 +385,7 @@ $(document).ready(function(){
 		inputAreaId : "input_chat3_area",
 		onair : true
 	});
-	
+
 	var testChat4 = new Chat({
 		debug : true,
 		userId : "chat4",
