@@ -70,7 +70,8 @@
 		<td>
 			<form id="form${id}" onsubmit="return false;">
 			OnAir <input type=checkbox id=onAir value="1" checked/><br/>
-			     <textarea wrap="hard" id="input_chat${id}_area" name="message" placeholder="press enter to send(live chat : OnAir check!!)" class="inset"></textarea>
+			     <input id="input_chat${id}_area" name="message" type="text" placeholder="press enter to send(live chat : OnAir check!!)" class="inset"><br/>
+			     <input type="button" value="Send" id="sendButton">
 			</form>
 		</td>
 <!-- 		<td> -->
@@ -97,7 +98,7 @@
 <script src="/spring-test/resources/static/js/json2.js"></script>
 <script src="/spring-test/resources/static/js/jquery.form.min.js"></script>
 <script src="/spring-test/resources/static/js/jquery.serializejson.min.js"></script>
-<script src="//cdn.jsdelivr.net/sockjs/1.0.0/sockjs.min.js"></script>
+<script src="/spring-test/resources/static/js/sockjs.min.js"></script>
 
 <script type="text/javascript">
 function Chat(options){
