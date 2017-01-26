@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.naver.test.mvc.model.HelloParam;
 
@@ -45,6 +46,13 @@ public class HelloController {
 		return "showMessage";
 	};
 
+	/**
+	 * 파라미터에 ModelAttribute 어노테이션 생략 가능
+	 * 
+	 * @param model
+	 * @param param
+	 * @return
+	 */
 	@RequestMapping("hello3")
 	public String hello3(Model model, HelloParam param) {
 		logger.info("message value : {}", param.getMessage());
@@ -76,4 +84,21 @@ public class HelloController {
 	public void addAttributes(Model model) {
 		model.addAttribute("msg", "Welcome to My Country");
 	}
+
+	/**
+	 * 명시적으로 Model & View 리턴
+	 * 
+	 * @param model
+	 * @param param
+	 * @return
+	 */
+	@RequestMapping("hello6")
+	public ModelAndView hello6(Model model, HelloParam param) {
+		ModelAndView mov = new ModelAndView();
+		mov.setViewName("showMessage");
+
+		logger.info("message value : {}", param.getMessage());
+		model.addAttribute("message", param.getMessage());
+		return mov;
+	};
 }
