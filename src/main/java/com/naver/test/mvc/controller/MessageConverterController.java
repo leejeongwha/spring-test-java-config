@@ -12,9 +12,21 @@ import org.springframework.web.bind.annotation.RestController;
 import com.naver.test.mvc.model.Item;
 import com.naver.test.mvc.model.ItemXml;
 
+/**
+ * RestTemplate 클래스의 생성자에 정의 되어 있음
+ * 
+ * @author NAVER
+ *
+ */
 @RestController
 @RequestMapping("mvc")
 public class MessageConverterController {
+	/**
+	 * MappingJackson2HttpMessageConverter 사용(classpath에 Jackson라이브러리 존재)
+	 * 
+	 * @param id
+	 * @return
+	 */
 	@RequestMapping(value = "/item/json/{id}", method = { RequestMethod.GET })
 	public Item getItemJson(@PathVariable Integer id) {
 		Item item = new Item();
@@ -25,6 +37,12 @@ public class MessageConverterController {
 		return item;
 	};
 
+	/**
+	 * MappingJackson2XmlHttpMessageConverter
+	 * 
+	 * @param id
+	 * @return
+	 */
 	@RequestMapping(value = "/item/xml/{id}", method = { RequestMethod.GET })
 	public ItemXml getItemXml(@PathVariable Integer id) {
 		ItemXml item = new ItemXml();
@@ -35,6 +53,12 @@ public class MessageConverterController {
 		return item;
 	};
 
+	/**
+	 * ByteArrayMessageConverter
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/photo", headers = "Accept=image/jpeg, image/jpg, image/png, image/gif", method = RequestMethod.GET)
 	public byte[] testphoto() throws Exception {
 		Path path = Paths.get("D:/picture/MyGirl_20140605_213417.png");
