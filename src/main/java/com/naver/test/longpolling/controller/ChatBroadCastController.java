@@ -31,7 +31,7 @@ public class ChatBroadCastController {
 	@RequestMapping(value = "/broadcast", method = RequestMethod.GET)
 	@ResponseBody
 	public DeferredResult<Message> broadcast() {
-		logger.info("broadcast request & check queue size  : {}", responseBodyQueue.size());
+
 		DeferredResult<Message> result = new DeferredResult<Message>();
 
 		result.onCompletion(new Runnable() {
@@ -51,6 +51,8 @@ public class ChatBroadCastController {
 		});
 
 		responseBodyQueue.add(result);
+
+		logger.info("broadcast request & check queue size  : {}", responseBodyQueue.size());
 
 		return result;
 	}

@@ -36,10 +36,17 @@
 
 <script type="text/javascript">
 (function poll(){
-	console.log("send")
-    $.ajax({ url: "/spring-test/chatDeferred/broadcast", success: function(data) {
-    	$('#chat').append(JSON.stringify(data.content) + "\n");
-    }, dataType: "json", complete: poll, timeout: 30000 });
+	console.log("polling start")
+    $.ajax({ url: "/spring-test/chatDeferred/broadcast", 
+    	success: function(data) {
+    		$('#chat').append(JSON.stringify(data.content) + "\n");
+    	}
+    	,error: function(request,status,error) {
+    		console.log("connection removed");
+    	}
+    	,dataType: "json"
+    	,complete: poll 
+    });
 })();
 
 function send(event) {
